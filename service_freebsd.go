@@ -25,7 +25,7 @@ func (freebsdSystem) Detect() bool {
 func (freebsdSystem) Interactive() bool {
 	return interactive
 }
-func (freebsdSystem) New(i Interface, c *Config) (Service, error) {
+func (freebsdSystem) New(i Interface, c *Config, readyChan chan struct{}) (Service, error) {
 	s := &freebsdService{
 		i:      i,
 		Config: c,

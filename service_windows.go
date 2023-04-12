@@ -46,6 +46,8 @@ type windowsService struct {
 
 	errSync      sync.Mutex
 	stopStartErr error
+
+	readyChan chan struct{}
 }
 
 // WindowsLogger allows using windows specific logging methods.
@@ -65,10 +67,11 @@ func (windowsSystem) Detect() bool {
 func (windowsSystem) Interactive() bool {
 	return interactive
 }
-func (windowsSystem) New(i Interface, c *Config) (Service, error) {
+func (windowsSystem) New(i Interface, c *Config, readyChan chan struct{}) (Service, error) {
 	ws := &windowsService{
-		i:      i,
-		Config: c,
+		i:         i,
+		Config:    c,
+		readyChan: readyChan,
 	}
 	return ws, nil
 }
@@ -189,6 +192,7 @@ func (ws *windowsService) Execute(args []string, r <-chan svc.ChangeRequest, cha
 	}
 
 	changes <- svc.Status{State: svc.Running, Accepts: cmdsAccepted}
+	close(ws.readyChan)
 loop:
 	for {
 		c := <-r

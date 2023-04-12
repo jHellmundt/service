@@ -30,7 +30,7 @@ func (sc linuxSystemService) Detect() bool {
 func (sc linuxSystemService) Interactive() bool {
 	return sc.interactive()
 }
-func (sc linuxSystemService) New(i Interface, c *Config) (Service, error) {
+func (sc linuxSystemService) New(i Interface, c *Config, readyChan chan struct{}) (Service, error) {
 	return sc.new(i, sc.String(), c)
 }
 

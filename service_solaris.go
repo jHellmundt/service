@@ -31,7 +31,7 @@ func (solarisSystem) Detect() bool {
 func (solarisSystem) Interactive() bool {
 	return interactive
 }
-func (solarisSystem) New(i Interface, c *Config) (Service, error) {
+func (solarisSystem) New(i Interface, c *Config, readyChan chan struct{}) (Service, error) {
 	s := &solarisService{
 		i:      i,
 		Config: c,

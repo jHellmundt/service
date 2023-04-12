@@ -39,7 +39,7 @@ func (darwinSystem) Interactive() bool {
 	return interactive
 }
 
-func (darwinSystem) New(i Interface, c *Config) (Service, error) {
+func (darwinSystem) New(i Interface, c *Config, readyChan chan struct{}) (Service, error) {
 	s := &darwinLaunchdService{
 		i:      i,
 		Config: c,

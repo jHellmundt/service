@@ -1,4 +1,5 @@
-//+build aix
+//go:build aix
+// +build aix
 
 // Copyright 2015 Daniel Theophanes.
 // Use of this source code is governed by a zlib-style
@@ -35,7 +36,7 @@ func (aixSystem) Detect() bool {
 func (aixSystem) Interactive() bool {
 	return interactive
 }
-func (aixSystem) New(i Interface, c *Config) (Service, error) {
+func (aixSystem) New(i Interface, c *Config, readyChan chan struct{}) (Service, error) {
 	s := &aixService{
 		i:      i,
 		Config: c,

@@ -158,14 +158,14 @@ var (
 )
 
 // New creates a new service based on a service interface and configuration.
-func New(i Interface, c *Config) (Service, error) {
+func New(i Interface, c *Config, readyChan chan struct{}) (Service, error) {
 	if len(c.Name) == 0 {
 		return nil, ErrNameFieldRequired
 	}
 	if system == nil {
 		return nil, ErrNoServiceSystemDetected
 	}
-	return system.New(i, c)
+	return system.New(i, c, readyChan)
 }
 
 // KeyValue provides a list of system specific options.
@@ -360,7 +360,7 @@ type System interface {
 	Interactive() bool
 
 	// New creates a new service for this system.
-	New(i Interface, c *Config) (Service, error)
+	New(i Interface, c *Config, readyChan chan struct{}) (Service, error)
 }
 
 // Interface represents the service interface for a program. Start runs before
